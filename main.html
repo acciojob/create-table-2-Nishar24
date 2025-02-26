@@ -1,39 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Dynamic Table Creation</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Table</title>
 </head>
 <body>
-    <table id="myTable"></table>
-    <button id="createButton">Create the table</button>
-
-    <script>
-        function createTable() {
-            const rn = parseInt(prompt("Input number of rows"));
-            const cn = parseInt(prompt("Input number of columns"));
-
-            if (isNaN(rn) || isNaN(cn)) {
-                return; // Ignore non-numeric input
-            }
-
-            if (rn <= 0 || cn <= 0) {
-                alert("Number of rows and columns must be greater than 0.");
-                return;
-            }
-
-            const table = document.getElementById("myTable");
-            table.innerHTML = ""; // Clear existing table content
-
-            for (let i = 0; i < rn; i++) {
-                const row = table.insertRow(i);
-                for (let j = 0; j < cn; j++) {
-                    const cell = row.insertCell(j);
-                    cell.textContent = `Row-${i} Column-${j}`;
-                }
-            }
-        }
-
-        document.getElementById("createButton").addEventListener("click", createTable);
-    </script>
+    <table id="myTable" border="1"></table>
+    <button>Create the table</button>
+    <script src="script.js"></script>
 </body>
 </html>
