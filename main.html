@@ -1,74 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text-to-Speech</title>
+    <title>Dynamic Table Creation</title>
 </head>
 <body>
-    <h2>Text-to-Speech Application</h2>
-    <textarea id="text-input" placeholder="Enter text here..."></textarea>
-    <br>
-    <label for="voices">Choose Voice:</label>
-    <select id="voices"></select>
-    <br>
-    <label for="rate">Rate:</label>
-    <input type="range" id="rate" min="0.5" max="2" step="0.1" value="1">
-    <span id="rate-value">1</span>
-    <br>
-    <label for="pitch">Pitch:</label>
-    <input type="range" id="pitch" min="0" max="2" step="0.1" value="1">
-    <span id="pitch-value">1</span>
-    <br>
-    <button id="speak">Speak</button>
-    <button id="stop">Stop</button>
+    <table id="myTable"></table>
+    <button id="createButton">Create the table</button>
 
     <script>
-        const textInput = document.getElementById("text-input");
-        const voiceSelect = document.getElementById("voices");
-        const rateInput = document.getElementById("rate");
-        const pitchInput = document.getElementById("pitch");
-        const speakButton = document.getElementById("speak");
-        const stopButton = document.getElementById("stop");
-        const rateValue = document.getElementById("rate-value");
-        const pitchValue = document.getElementById("pitch-value");
-        
-        let voices = [];
-        const synth = window.speechSynthesis;
-        
-        function populateVoices() {
-            voices = synth.getVoices();
-            voiceSelect.innerHTML = "";
-            voices.forEach(voice => {
-                const option = document.createElement("option");
-                option.value = voice.name;
-                option.textContent = `${voice.name} (${voice.lang})`;
-                voiceSelect.appendChild(option);
-            });
+        function createTable() {
+            const rn = parseInt(prompt("Input number of rows"));
+            const cn = parseInt(prompt("Input number of columns"));
+
+            if (isNaN(rn) || isNaN(cn)) {
+                return; // Ignore non-numeric input
+            }
+
+            if (rn <= 0 || cn <= 0) {
+                alert("Number of rows and columns must be greater than 0.");
+                return;
+            }
+
+            const table = document.getElementById("myTable");
+            table.innerHTML = ""; // Clear existing table content
+
+            for (let i = 0; i < rn; i++) {
+                const row = table.insertRow(i);
+                for (let j = 0; j < cn; j++) {
+                    const cell = row.insertCell(j);
+                    cell.textContent = `Row-${i} Column-${j}`;
+                }
+            }
         }
-        
-        synth.onvoiceschanged = populateVoices;
-        
-        function speak() {
-            if (!textInput.value) return;
-            const utterance = new SpeechSynthesisUtterance(textInput.value);
-            const selectedVoice = voices.find(voice => voice.name === voiceSelect.value);
-            if (selectedVoice) utterance.voice = selectedVoice;
-            utterance.rate = rateInput.value;
-            utterance.pitch = pitchInput.value;
-            synth.speak(utterance);
-        }
-        
-        function stopSpeech() {
-            synth.cancel();
-        }
-        
-        speakButton.addEventListener("click", speak);
-        stopButton.addEventListener("click", stopSpeech);
-        rateInput.addEventListener("input", () => rateValue.textContent = rateInput.value);
-        pitchInput.addEventListener("input", () => pitchValue.textContent = pitchInput.value);
-        
-        populateVoices();
+
+        document.getElementById("createButton").addEventListener("click", createTable);
     </script>
 </body>
 </html>
